@@ -26,6 +26,9 @@ const client = new MongoClient(uri, {
 });
 
 const LuxuryCollection = client.db("Luxury_HotelDB").collection("Luxury_Hotel");
+const LuxuryRoomsCollection = client
+  .db("Luxury_RoomsDB")
+  .collection("Luxury_Rooms");
 
 async function run() {
   try {
@@ -35,6 +38,10 @@ async function run() {
 
     app.get("/feature_room", async (req, res) => {
       const result = await LuxuryCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/rooms", async (req, res) => {
+      const result = await LuxuryRoomsCollection.find().toArray();
       res.send(result);
     });
 
