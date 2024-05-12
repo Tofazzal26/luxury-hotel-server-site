@@ -63,9 +63,44 @@ async function run() {
 
     app.get("/roomDetails/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await LuxuryRoomsCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.patch("/availableRooms/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateRoom = req.body;
+      const rooms = {
+        $set: {
+          availability: updateRoom.availability,
+        },
+      };
+      const result = await LuxuryRoomsCollection.updateOne(
+        query,
+        rooms,
+        options
+      );
+      res.send(result);
+    });
+
+    app.patch("/updateDate/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateRoom = req.body;
+      const rooms = {
+        $set: {
+          newDates: updateRoom.newDates,
+        },
+      };
+      const result = await LuxuryRoomsCollection.updateOne(
+        query,
+        rooms,
+        options
+      );
       res.send(result);
     });
 
