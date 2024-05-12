@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
@@ -26,6 +26,9 @@ const client = new MongoClient(uri, {
 });
 
 const LuxuryCollection = client.db("Luxury_HotelDB").collection("Luxury_Hotel");
+const MyBookingCollection = client
+  .db("Booking_RoomDB")
+  .collection("Booking_Room");
 const LuxuryRoomsCollection = client
   .db("Luxury_RoomsDB")
   .collection("Luxury_Rooms");
@@ -42,6 +45,27 @@ async function run() {
     });
     app.get("/rooms", async (req, res) => {
       const result = await LuxuryRoomsCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/myBooking", async (req, res) => {
+      const booking = req.body;
+      const result = await MyBookingCollection.insertOne(booking);
+      res.send(result);
+    });
+
+    app.get("/myBookingRoom/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await MyBookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/roomDetails/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await LuxuryRoomsCollection.findOne(query);
       res.send(result);
     });
 
