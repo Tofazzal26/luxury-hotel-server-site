@@ -96,11 +96,14 @@ async function run() {
           newDates: updateRoom.newDates,
         },
       };
-      const result = await LuxuryRoomsCollection.updateOne(
-        query,
-        rooms,
-        options
-      );
+      const result = await MyBookingCollection.updateOne(query, rooms, options);
+      res.send(result);
+    });
+
+    app.delete("/deleteBook/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await MyBookingCollection.deleteOne(query);
       res.send(result);
     });
 
