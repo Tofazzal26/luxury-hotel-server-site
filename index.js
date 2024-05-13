@@ -86,6 +86,28 @@ async function run() {
       res.send(result);
     });
 
+    // new availability
+
+    app.patch("/deletedAvailability/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateRoom = req.body;
+      const rooms = {
+        $set: {
+          availability: updateRoom.availability,
+        },
+      };
+      const result = await LuxuryRoomsCollection.updateOne(
+        query,
+        rooms,
+        options
+      );
+      res.send(result);
+    });
+
+    // new availability
+
     app.patch("/updateDate/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
