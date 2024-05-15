@@ -6,7 +6,6 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
-// middle ware
 app.use(express.json());
 app.use(cookieParser());
 require("dotenv").config();
@@ -129,8 +128,6 @@ async function run() {
       res.send(result);
     });
 
-    // new availability
-
     app.patch("/deletedAvailability/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -148,8 +145,6 @@ async function run() {
       );
       res.send(result);
     });
-
-    // new availability
 
     app.patch("/updateDate/:id", async (req, res) => {
       const id = req.params.id;
@@ -195,8 +190,6 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
   }
 }
 run().catch(console.dir);
