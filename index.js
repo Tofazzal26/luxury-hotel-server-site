@@ -15,6 +15,7 @@ app.use(
       "http://localhost:5173",
       "https://organic-foods-59169.web.app",
       "https://organic-foods-59169.firebaseapp.com",
+      "https://glittery-horse-edcbcc.netlify.app",
     ],
     credentials: true,
   })
@@ -51,6 +52,7 @@ const client = new MongoClient(uri, {
 });
 
 const LuxuryCollection = client.db("Luxury_HotelDB").collection("Luxury_Hotel");
+const BlogsCollection = client.db("Luxury_HotelDB").collection("Luxury_Blogs");
 const MyBookingCollection = client
   .db("Booking_RoomDB")
   .collection("Booking_Room");
@@ -106,6 +108,17 @@ async function run() {
       const email = req.params.email;
       const query = { email: email };
       const result = await MyBookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.post("/blogs", async (req, res) => {
+      const blog = req.body;
+      const result = await BlogsCollection.insertOne(blog);
+      res.send(result);
+    });
+
+    app.get("/blogs", async (req, res) => {
+      const result = await BlogsCollection.find().toArray();
       res.send(result);
     });
 
